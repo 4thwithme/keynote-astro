@@ -15,7 +15,7 @@ const nextPage = Number(pageNumber) + 1;
 const prevPage = Number(pageNumber) === 0 ? 0 : Number(pageNumber) - 1;
 
 const nextPageLink = `${Astro.url.origin}/keynote-astro/${nextPage}`;
-const nextBtnDisabled = Number(pageNumber) === 20;
+const nextBtnDisabled = Number(pageNumber) === 21;
 const prevPageLink = `${Astro.url.origin}/keynote-astro/${prevPage}`;
 const prevBtnDisabled = Number(pageNumber) === 0;
 ---
@@ -117,9 +117,9 @@ const prevBtnDisabled = Number(pageNumber) === 0;
 		container {
 			display: flex;
 			flex-direction: column;
-			align-items: center;
+			width: 60ch;
 			justify-content: center;
-			max-width: 60ch;
+			align-items: center;
 		}
 
 		.arrow {
@@ -135,6 +135,11 @@ const prevBtnDisabled = Number(pageNumber) === 0;
 		.disabled {
 			pointer-events: none;
 			opacity: 0.2;
+		}
+
+		container ul,
+		container p {
+			align-self: flex-start;
 		}
 
 		main {
@@ -155,6 +160,11 @@ const prevBtnDisabled = Number(pageNumber) === 0;
 			width: 220px;
 			height: auto;
 			z-index: -1;
+		}
+
+		a:not(.astro-a) {
+			color: #f6e326;
+			transition: 0.2s all;
 		}
 	</style>
 </html>
