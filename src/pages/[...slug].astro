@@ -2,6 +2,17 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import  Layout  from '../layouts/Layout.astro';
 
+const pathname = Astro.url.pathname;
+const pageNumber = pathname.split('/').pop();
+
+const nextPage = Number(pageNumber) + 1;
+const prevPage = Number(pageNumber) === 0 ? 0 : Number(pageNumber) - 1;
+
+const nextPageLink = `${Astro.url.origin}/keynote-astro/${nextPage}`;
+const nextBtnDisabled = Number(pageNumber) === 21;
+const prevPageLink = `${Astro.url.origin}/keynote-astro/${prevPage}`;
+const prevBtnDisabled = Number(pageNumber) === 0;
+
 export async function getStaticPaths() {
 	const docs = await getCollection('docs');
 	return docs.map((entry: {slug: string}) => ({
@@ -16,7 +27,53 @@ const post = Astro.props;
 const { Content, headings } = await post.render();
 ---
 
+<a
+	href={prevPageLink}
+	prev-link
+	class:list={[{ disabled: prevBtnDisabled }]}
+>
+	<img class="arrow" src="/keynote-astro/2.svg" />
+</a>
 <Layout headings={headings} {...post.data}>
-	<Content />
+	<container class="container">
+		<Content />
+	</container>
 </Layout>
+<a
+	href={nextPageLink}
+	next-link
+	class:list={[{ disabled: nextBtnDisabled }]}
+>
+	<img class="arrow" src="/keynote-astro/1.svg" />
+</a>
 
+<script is:inline>
+	if (!self.handleKeydown) {
+		self.handleKeydown = (e) => {
+			if (
+				e.key === 'ArrowLeft' &&
+				!document.querySelector('[prev-link]').classList.contains('disabled')
+			) {
+				document.querySelector('[prev-link]').click();
+			}
+			if (
+				e.key === 'ArrowRight' &&
+				!document.querySelector('[next-link]').classList.contains('disabled')
+			) {
+				document.querySelector('[next-link]').click();
+			}
+		};
+
+		document.addEventListener('keydown', self.handleKeydown);
+	}
+</script>
+
+<style>
+	.container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+	}
+</style>

@@ -62,45 +62,12 @@ const prevBtnDisabled = Number(pageNumber) === 0;
 			</defs>
 		</svg>
 
-		<a
-			href={prevPageLink}
-			prev-link
-			class:list={[{ disabled: prevBtnDisabled }]}
-		>
-			<img class="arrow" src="/keynote-astro/2.svg" />
-		</a>
 		<container>
 			<slot />
 		</container>
-		<a
-			href={nextPageLink}
-			next-link
-			class:list={[{ disabled: nextBtnDisabled }]}
-		>
-			<img class="arrow" src="/keynote-astro/1.svg" />
-		</a>
 	</body>
 
-	<script is:inline>
-		if (!self.handleKeydown) {
-			self.handleKeydown = (e) => {
-				if (
-					e.key === 'ArrowLeft' &&
-					!document.querySelector('[prev-link]').classList.contains('disabled')
-				) {
-					document.querySelector('[prev-link]').click();
-				}
-				if (
-					e.key === 'ArrowRight' &&
-					!document.querySelector('[next-link]').classList.contains('disabled')
-				) {
-					document.querySelector('[next-link]').click();
-				}
-			};
 
-			document.addEventListener('keydown', self.handleKeydown);
-		}
-	</script>
 
 	<style is:global>
 		:root {
