@@ -3,14 +3,15 @@ import { type CollectionEntry, getCollection } from 'astro:content';
 import  Layout  from '../layouts/Layout.astro';
 
 const pathname = Astro.url.pathname;
-const pageNumber = pathname.split('/').pop();
+const pageNumber = pathname.replaceAll('/', '').split('keynote-astro').pop()
+
 
 const nextPage = Number(pageNumber) + 1;
 const prevPage = Number(pageNumber) === 0 ? 0 : Number(pageNumber) - 1;
 
-const nextPageLink = `${Astro.url.origin}/keynote-astro/${nextPage}`;
+const nextPageLink = `/keynote-astro/${nextPage}`;
 const nextBtnDisabled = Number(pageNumber) === 21;
-const prevPageLink = `${Astro.url.origin}/keynote-astro/${prevPage}`;
+const prevPageLink = `/keynote-astro/${prevPage}`;
 const prevBtnDisabled = Number(pageNumber) === 0;
 
 export async function getStaticPaths() {
@@ -35,7 +36,7 @@ const { Content, headings } = await post.render();
 	<img class="arrow" src="/keynote-astro/2.svg" />
 </a>
 <Layout headings={headings} {...post.data}>
-	<container class="container">
+	<container>
 		<Content />
 	</container>
 </Layout>
@@ -67,13 +68,3 @@ const { Content, headings } = await post.render();
 		document.addEventListener('keydown', self.handleKeydown);
 	}
 </script>
-
-<style>
-	.container {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		height: 100vh;
-	}
-</style>
